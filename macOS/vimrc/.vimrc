@@ -1,110 +1,205 @@
-"pathogen
-execute pathogen#infect()
-filetype plugin indent on
+let g:livepreview_previewer = 'open -a Preview'
+autocmd Filetype tex setl updatetime=1000
+nmap <F8> :LLPStartPreview<cr>
 
-"encodin methods
-set encoding=utf-8
-set fileencodings=utf-8,cp950
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-"editin preferences
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#begin()
+Plugin 'flazz/vim-colorschemes'
+Plugin 'vim-latex/vim-latex'
+Plugin 'xuhdev/vim-latex-live-preview'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'NLKNguyen/papercolor-theme'
+Plugin 'dart-lang/dart-vim-plugin'
+Plugin 'Valloric/YouCompleteMe'
+call vundle#end()            " required
+
+
+map <F7> :NERDTree<CR>
+
+
+" 开启语法高亮
 syntax on
+" history存储容量
+set history=2000
+" 检测文件类型
+filetype on
+" 针对不同的文件类型采用不同的缩进格式
+filetype indent on
+" 允许插件
+filetype plugin on
+" 启动自动全
+filetype plugin indent on
+" 文件修改之后自动载入
+set autoread
+set wildignore=*.swp,*.bak,*.pyc,*.class,.svn
+" 启用鼠标
+set mouse=a
 
-"view
-set ai
-set nu "showin the row number
-set ic "ignore the diff. between upper&lower while searchin
-set cursorline
-set hlsearch
-set incsearch
-set history=100
+" 显示当前的行号列号
+set nu
 set ruler
-set shiftwidth=4
+" 在状态栏显示正在输入的命令
+set showcmd 
+" 左下角显示当前vim模式
+set showmode
+set autoindent
+" 取消换行
+set nowrap
+set backspace=2
+set cursorline
+" 括号配对情况, 跳转并高亮一下匹配的括号
+set showmatch
+" 设置文内智能搜索提示
+" 高亮search命中的文本
+set hlsearch
+" 打开增量搜索模式,随着键入即时搜索
+set incsearch
+" 搜索时忽略大小写
+set ignorecase
+" 有一个或以上大写字母时仍大小写敏感
+set smartcase
+" 代码折叠
+"set foldmethod=indent
+" 缩进配置
+" Smart indent
+set smartindent
+" 打开自动缩进
+" never add copyindent, case error   " copy the previous indentation on autoindenting
+set autoindent
+
+" 设置Tab键的宽度        [等同的空格个数]
 set tabstop=4
-set formatoptions+=r "auto comment
-set t_Co=256 "set the terminal color to 256bit
-set showmode "showing the edit status
 
-"Enable folding
-set foldmethod=indent
-set foldlevel=99
 
-"Syntastic Settings
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" 防止tmux下vim的背景色显示异常
+" Refer: http://sunaku.github.io/vim-256color-bce.html
+if &term =~ '256color'
+  " disable Background Color Erase (BCE) so that color schemes
+  " render properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
+endif
 
-"Enable folding with spacebar
-nnoremap <space> za
-:inoremap " ""<Esc>i
-:inoremap ' ''<Esc>i
-:inoremap [ []<Esc>i
-:inoremap { {}<Esc>i
-
-"Simpylfol
-let g:SimpylFold_docstring_preview=1
-
-"IndentLine
-let g:indentLine_char = '¦'
-let g:indentLine_enabled = 1
-
-"YouCompleteMe
-let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf=0
+" vimrc文件修改之后自动加载, linux
+autocmd! bufwritepost .vimrc source %
+" 自动补全配置
+" 让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 set completeopt=longest,menu
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_complete_in_comments=1
-let g:ycm_collect_identifiers_from_comments_and_strings = 0
-let g:ycm_min_num_of_chars_for_completion=2
-let g:ycm_autoclose_preview_window_after_completion=1
-let g:ycm_cache_omnifunc=0
-let g:ycm_complete_in_strings=1
+" 增强模式中的命令行自动完成操作
+set wildmenu
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc,*.class
+" 离开插入模式后自动关闭预览窗口
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
-"golang
-au FileType go nmap gr (go-run)  
-au FileType go nmap gt (go-test)  
-let g:go_hightlight_functions = 1
-let g:go_hightlight_methods = 1
-let g:go_hightlight_structs = 1
-let g:go_hightlight_interfaces = 1
-let g:go_highlight_types = 1
-let g:go_hightlight_operators = 1
-let g:go_hightlight_build_constraints = 1
-let g:go_highlight_variable_assignments = 1
-let g:go_highlight_fields = 1
-let g:go_fmt_command = "goimports"
+" F2 行号开关，用于鼠标复制代码用
+" 为方便复制，用<F2>开启/关闭行号显示:
+function! HideNumber()
+  if(&relativenumber == &number)
+    set relativenumber! number!
+  elseif(&number)
+    set number!
+  else
+    set relativenumber!
+  endif
+  set number?
+endfunc
+nnoremap <F2> :call HideNumber()<CR>
 
-"dartlang
-let dart_html_in_string=v:true
-let dart_style_guide = 2
-let dart_format_on_save = 1
+" 复制选中区到系统剪切板中
+vnoremap <leader>y "+y
 
-"nerdtree
-autocmd vimenter * NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-let NERDTreeWinSize=25
-map <C-n> :NERDTreeToggle<CR>
+" 具体编辑文件类型的一般设置，比如不要 tab 等
+autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
+autocmd FileType ruby,javascript,html,css,xml set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+autocmd BufRead,BufNewFile *.md,*.mkd,*.markdown set filetype=markdown.mkd
+autocmd BufRead,BufNewFile *.part set filetype=html
+autocmd BufRead,BufNewFile *.vue setlocal filetype=vue.html.javascript tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
+" 保存python文件时删除多余空格
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd FileType c,cpp,java,go,php,javascript,puppet,python,rust,twig,xml,yml,perl autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-"theme
-syntax enable
+" 定义函数AutoSetFileHead，自动插入文件头
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+function! AutoSetFileHead()
+    "如果文件类型为.sh文件
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+    endif
+
+    "如果文件类型为python
+    if &filetype == 'python'
+
+			" call setline(1, "\#!/usr/bin/env python")
+        " call append(1, "\# encoding: utf-8")
+        call setline(1, "\# -*- coding: utf-8 -*-")
+    endif
+
+    normal G
+    normal o
+    normal o
+endfunc
+
+" 设置可以高亮的关键字
+if has("autocmd")
+  " Highlight TODO, FIXME, NOTE, etc.
+  if v:version > 701
+    autocmd Syntax * call matchadd('Todo',  '\W\zs\(TODO\|FIXME\|CHANGED\|DONE\|XXX\|BUG\|HACK\)')
+    autocmd Syntax * call matchadd('Debug', '\W\zs\(NOTE\|INFO\|IDEA\|NOTICE\)')
+  endif
+endif
+" theme主题
 set background=dark
-colorscheme monokai
-"colorscheme molokai
-"let g:solarized_termcolor=256
-let g:molokai_original=1
+set t_Co=256
 
-" vim-latex-live-preview settings
-autocmd Filetype tex setl updatetime=400
-let g:livepreview_previewer = 'open -a Preview'
-let g:livepreview_engine = 'latexmk -pdf'
-nmap <F12> :LLPStartPreview<cr>
+set clipboard=unnamed
+set laststatus=2
 
-"python exec
-autocmd BufRead *.py nmap<leader>c :w<Esc>G:r!python3.4 %<CR>
+set statusline=[%{expand('%:p')}][%{strlen(&fenc)?&fenc:&enc},\ %{&ff},\ %{strlen(&filetype)?&filetype:'plain'}]%{FileSize()}%{IsBinary()}%=%c,%l/%L\ [%3p%%]
+
+function IsBinary()
+    if (&binary == 0)
+        return ""
+    else
+        return "[Binary]"
+    endif
+endfunction
+
+function FileSize()
+    let bytes = getfsize(expand("%:p"))
+    if bytes <= 0
+        return "[Empty]"
+    endif
+    if bytes < 1024
+        return "[" . bytes . "B]"
+    elseif bytes < 1048576
+        return "[" . (bytes / 1024) . "KB]"
+    else
+        return "[" . (bytes / 1048576) . "MB]"
+    endif
+endfunction
+hi CursorLineNr cterm=bold ctermfg=Green ctermbg=NONE
+let iCanHazVundle=1
+
+
+
+let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+if !filereadable(vundle_readme)
+  echo "Installing Vundle.."
+  echo ""
+  silent !mkdir -p ~/.vim/bundle
+  silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+  let iCanHazVundle=0
+endif
+
+

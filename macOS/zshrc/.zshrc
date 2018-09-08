@@ -1,33 +1,32 @@
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+
+function chpwd() {
+    emulate -L zsh
+    ls 
+}
+
+
+[ -z "$TMUX" ] && export TERM=xterm-256color
+
+
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH 
+
+# optionally set DEFAULT_USER in ~/.zshrc to your regular username to hide the “user@hostname” info when you’re logged in as yourself on your local machine.
+DEFAULT_USER=sujianwei20
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+export ANDROID_HOME=~/Library/Android/sdk
 # If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH="$PATH:$HOME/.scripts/bin"
-export GOPATH="$HOME/go"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-export PATH="/usr/bin:$PATH"
-export PATH="/usr/local/opt/openssl/bin:$PATH"
-export PATH="/usr/local/opt/sqlite/bin:$PATH"
-export PATH="/usr/local/etc/flutter/bin:$PATH"
-export PATH="$HOME/go/bin:$PATH"
-
-# settings for macports
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-export PATH=/opt/local/Library/Frameworks/Python.framework/Versions/3.6/bin:$PATH
-export PATH=/opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin:$PATH
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/Admin/.oh-my-zsh
+export ZSH=/Users/sujianwei20/.oh-my-zsh
+export PATH=~/flutter/bin:$PATH
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="muse"
+ZSH_THEME="ys"
+
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -36,15 +35,13 @@ ZSH_THEME="muse"
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# Uncomment the following line to disable bi-weekly auto-update checks.  # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
-
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
@@ -72,15 +69,16 @@ ZSH_THEME="muse"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
+plugins=(zsh-autosuggestions)
 
-source ~/.oh-my-zsh/oh-my-zsh.sh
+source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
- export LANG=en_US.UTF-8
+# export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -92,6 +90,11 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
+
+
+
+
+
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
 
@@ -101,10 +104,11 @@ source ~/.oh-my-zsh/oh-my-zsh.sh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias python=python3
-alias py3=python3
-alias py2=python2
+ alias zshconfig="mate ~/.zshrc"
+ alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#eval $(dircolors -b $HOME/.dircolors)
+# show Mac info
+#archey
+#iStats
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+export TERM=xterm-256color
